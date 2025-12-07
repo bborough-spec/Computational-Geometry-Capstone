@@ -13,7 +13,7 @@ from matplotlib.collections import PolyCollection
 # ----------------------------
 # Load image
 # ----------------------------
-img = Image.open("SampleImages/Delaunay art.jpg")
+img = Image.open("SampleImages/Delaunay art.jpg") (SUBJECT TO CHANGE)
 img.save("SampleImages/Delaunay art.gif", "GIF")
 
 width, height = img.size
@@ -43,7 +43,7 @@ def turtle_to_pixel(tx, ty, W, H):
 # ----------------------------
 
 # Turtle boundaries you chose
-turtle_corners = [(640,410),(-640,410),(-640,-410),(640,-410)]
+turtle_corners = [(640,410),(-640,410),(-640,-410),(640,-410)] (SUBJECT TO CHANGE)
 
 # Start list of points (in pixel coords)
 Points = []
@@ -185,7 +185,7 @@ from matplotlib.collections import PolyCollection
 # ----------------------------
 # Load image
 # ----------------------------
-img = Image.open("SampleImages/Delaunay art.jpg")
+img = Image.open("SampleImages/Delaunay art.jpg") (SUBJECT TO CHANGE)
 img.save("SampleImages/Delaunay art.gif", "GIF")
 
 width, height = img.size
@@ -215,7 +215,7 @@ def turtle_to_pixel(tx, ty, W, H):
 # ----------------------------
 
 # Turtle boundaries you chose
-turtle_corners = [(640,410),(-640,410),(-640,-410),(640,-410)]
+turtle_corners = [(640,410),(-640,410),(-640,-410),(640,-410)] (SUBJECT TO CHANGE)
 
 # Start list of points (in pixel coords)
 Points = []
@@ -227,7 +227,7 @@ for tx, ty in turtle_corners:
     Points.append((px, py))
 
 # Random turtle points
-ranpoints = [(random.randint(-640, 640), random.randint(-410, 410)) for _ in range(1000)]
+ranpoints = [(random.randint(-640, 640), random.randint(-410, 410)) for _ in range(1000)] (SUBJECT TO CHANGE)
 
 for tx, ty in ranpoints:
     bob.penup(); bob.goto(tx, ty); bob.dot(10, "red")
