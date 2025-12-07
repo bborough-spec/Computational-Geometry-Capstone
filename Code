@@ -1,0 +1,342 @@
+Choosing your Points Code
+------------------------------
+from imageTools import *
+from PIL import Image
+from collections import Counter
+import random
+import numpy as np
+from scipy.spatial import Delaunay
+import matplotlib.pyplot as plt
+import turtle
+from matplotlib.collections import PolyCollection
+
+# ----------------------------
+# Load image
+# ----------------------------
+img = Image.open("SampleImages/Delaunay art.jpg")
+img.save("SampleImages/Delaunay art.gif", "GIF")
+
+width, height = img.size
+print("Width:", width)
+print("Height:", height)
+
+# ----------------------------
+# Turtle setup
+# ----------------------------
+screen = turtle.Screen()
+screen.setup(1500,1500)
+screen.bgpic("SampleImages/Delaunay art.gif")
+bob = turtle.Turtle()
+bob.hideturtle()
+bob.speed(0)
+
+# ----------------------------
+# Utility: Convert turtle → pixel coordinates
+# ----------------------------
+def turtle_to_pixel(tx, ty, W, H):
+    px = tx + W/2          # shift center to left
+    py = (H/2) - ty        # flip Y and shift down
+    return px, py
+
+# ----------------------------
+# Create points in turtle coords, convert to pixel coords
+# ----------------------------
+
+# Turtle boundaries you chose
+turtle_corners = [(640,410),(-640,410),(-640,-410),(640,-410)]
+
+# Start list of points (in pixel coords)
+Points = []
+Userpoints = []
+tri = None
+
+def userpick(x,y):
+  bob.penup()
+  bob.goto(x,y)
+  bob.dot(10,"red")
+  Userpoints.append((x,y))
+
+screen.onscreenclick(userpick)
+
+
+
+def moveon():
+    global tri, Points
+    for x,y in Userpoints:
+        print(x,y)
+
+    Points.clear()
+    for x,y in Userpoints:
+        px, py = turtle_to_pixel(x, y, width, height)
+        Points.append((px, py))
+
+# Add corners
+    for tx, ty in turtle_corners:
+        bob.penup(); bob.goto(tx, ty); bob.dot(10, "red")
+        px, py = turtle_to_pixel(tx, ty, width, height)
+        Points.append((px, py))
+
+    points = np.array(Points)
+    tri = Delaunay(Points)
+    triangles = tri.simplices
+
+    verts = []
+
+    for tri_indices in triangles:
+        v = [
+            (points[tri_indices[0], 0], points[tri_indices[0], 1]),
+            (points[tri_indices[1], 0], points[tri_indices[1], 1]),
+            (points[tri_indices[2], 0], points[tri_indices[2], 1])
+        ]
+        verts.append(v)
+
+    # ----------------------------
+    # Sample image at triangle centroids (pixel coords)
+    # ----------------------------
+    triangle_colors_center = []
+
+    for tri_indices in triangles:
+        x1, y1 = points[tri_indices[0]]
+        x2, y2 = points[tri_indices[1]]
+        x3, y3 = points[tri_indices[2]]
+
+        cx = (x1 + x2 + x3) / 3
+        cy = (y1 + y2 + y3) / 3
+
+        # Clamp
+        ix = max(0, min(width - 1, int(cx)))
+        iy = max(0, min(height - 1, int(cy)))
+
+        rgb = img.getpixel((ix, iy))
+        triangle_colors_center.append(rgb)
+
+    triangle_colors_center = np.array(triangle_colors_center) / 255.0
+
+    # ----------------------------
+    # sample colors average
+
+    triangle_colors_avg = []
+
+    for tri_indices in triangles:
+        x1, y1 = points[tri_indices[0]]
+        x2, y2 = points[tri_indices[1]]
+        x3, y3 = points[tri_indices[2]]
+
+        ix1 = max(0, min(width - 1, int(x1)))
+        iy1 = max(0, min(height - 1, int(y1)))
+        ix2 = max(0, min(width - 1, int(x2)))
+        iy2 = max(0, min(height - 1, int(y2)))
+        ix3 = max(0, min(width - 1, int(x3)))
+        iy3 = max(0, min(height - 1, int(y3)))
+
+        color1 = np.array(img.getpixel((ix1, iy1)))
+        color2 = np.array(img.getpixel((ix2, iy2)))
+        color3 = np.array(img.getpixel((ix3, iy3)))
+
+        avgcolor = (color1 + color2 + color3) / 3
+        triangle_colors_avg.append(avgcolor)
+
+    triangle_colors_avg = np.array(triangle_colors_avg) / 255.0
+
+    # Plot triangles using matplotlib (centriod)
+    # ----------------------------
+    fig, ax = plt.subplots()
+
+    pc = PolyCollection(verts, facecolors=triangle_colors_center, edgecolors='black', linewidths=0.3)
+    ax.add_collection(pc)
+    ax.set_aspect('equal')
+
+    ax.set_xlim(0, width)
+    ax.set_ylim(height, 0)  # flip y-axis for image coords
+
+    # Plot triangles using matplotlib (average)
+    # ----------------------------
+
+    fig, ay = plt.subplots()
+
+    py = PolyCollection(verts, facecolors=triangle_colors_avg, edgecolors='black', linewidths=0.3)
+    ay.add_collection(py)
+    ay.set_aspect('equal')
+
+    ay.set_xlim(0, width)
+    ay.set_ylim(height, 0)  # flip y-axis for image coords
+
+    plt.show()
+
+screen.onkeypress(moveon, "space")
+screen.listen()
+
+# Keep window open so the user can click points
+screen.mainloop()
+
+--------------------------------
+Random Points Code
+--------------------------------
+from imageTools import *
+from PIL import Image
+from collections import Counter
+import random
+import numpy as np
+from scipy.spatial import Delaunay
+import matplotlib.pyplot as plt
+import turtle
+from matplotlib.collections import PolyCollection
+
+# ----------------------------
+# Load image
+# ----------------------------
+img = Image.open("SampleImages/Delaunay art.jpg")
+img.save("SampleImages/Delaunay art.gif", "GIF")
+
+width, height = img.size
+print("Width:", width)
+print("Height:", height)
+
+# ----------------------------
+# Turtle setup
+# ----------------------------
+screen = turtle.Screen()
+screen.setup(1500,1500)
+screen.bgpic("SampleImages/Delaunay art.gif")
+bob = turtle.Turtle()
+bob.hideturtle()
+bob.speed(0)
+
+# ----------------------------
+# Utility: Convert turtle → pixel coordinates
+# ----------------------------
+def turtle_to_pixel(tx, ty, W, H):
+    px = tx + W/2          # shift center to left
+    py = (H/2) - ty        # flip Y and shift down
+    return px, py
+
+# ----------------------------
+# Create points in turtle coords, convert to pixel coords
+# ----------------------------
+
+# Turtle boundaries you chose
+turtle_corners = [(640,410),(-640,410),(-640,-410),(640,-410)]
+
+# Start list of points (in pixel coords)
+Points = []
+
+# Add corners
+for tx, ty in turtle_corners:
+    bob.penup(); bob.goto(tx, ty); bob.dot(10, "red")
+    px, py = turtle_to_pixel(tx, ty, width, height)
+    Points.append((px, py))
+
+# Random turtle points
+ranpoints = [(random.randint(-640, 640), random.randint(-410, 410)) for _ in range(1000)]
+
+for tx, ty in ranpoints:
+    bob.penup(); bob.goto(tx, ty); bob.dot(10, "red")
+    px, py = turtle_to_pixel(tx, ty, width, height)
+    Points.append((px, py))
+
+# Convert to numpy array (pixel coords)
+points = np.array(Points)
+
+# ----------------------------
+# Triangulate in pixel coordinate space
+# ----------------------------
+tri = Delaunay(points)
+
+# ----------------------------
+# Build triangle vertex list (pixel coordinates)
+# ----------------------------
+triangles = tri.simplices
+verts = []
+
+for tri_indices in triangles:
+    v = [
+        (points[tri_indices[0],0], points[tri_indices[0],1]),
+        (points[tri_indices[1],0], points[tri_indices[1],1]),
+        (points[tri_indices[2],0], points[tri_indices[2],1])
+    ]
+    verts.append(v)
+
+# ----------------------------
+# Sample image at triangle centroids (pixel coords)
+# ----------------------------
+triangle_colors_center = []
+
+for tri_indices in triangles:
+    x1, y1 = points[tri_indices[0]]
+    x2, y2 = points[tri_indices[1]]
+    x3, y3 = points[tri_indices[2]]
+
+    cx = (x1 + x2 + x3) / 3
+    cy = (y1 + y2 + y3) / 3
+
+    # Clamp
+    ix = max(0, min(width  - 1, int(cx)))
+    iy = max(0, min(height - 1, int(cy)))
+
+    rgb = img.getpixel((ix, iy))
+    triangle_colors_center.append(rgb)
+
+triangle_colors_center = np.array(triangle_colors_center) / 255.0
+
+# ----------------------------
+#sample colors average
+
+triangle_colors_avg = []
+
+for tri_indices in triangles:
+    x1, y1 = points[tri_indices[0]]
+    x2, y2 = points[tri_indices[1]]
+    x3, y3 = points[tri_indices[2]]
+
+    ix1 = max(0, min(width - 1, int(x1)))
+    iy1 = max(0, min(height - 1, int(y1)))
+    ix2 = max(0, min(width - 1, int(x2)))
+    iy2 = max(0, min(height - 1, int(y2)))
+    ix3 = max(0, min(width - 1, int(x3)))
+    iy3 = max(0, min(height - 1, int(y3)))
+
+    color1 = np.array(img.getpixel((ix1,iy1)))
+    color2 = np.array(img.getpixel((ix2, iy2)))
+    color3 = np.array(img.getpixel((ix3, iy3)))
+
+    avgcolor = (color1+color2+color3) / 3
+    triangle_colors_avg.append(avgcolor)
+
+triangle_colors_avg = np.array(triangle_colors_avg) / 255.0
+
+# Plot triangles using matplotlib (centriod)
+# ----------------------------
+fig, ax = plt.subplots()
+
+pc = PolyCollection(verts, facecolors=triangle_colors_center, edgecolors='black', linewidths=0.3)
+ax.add_collection(pc)
+ax.set_aspect('equal')
+
+ax.set_xlim(0, width)
+ax.set_ylim(height, 0)  # flip y-axis for image coords
+
+
+# Plot triangles using matplotlib (average)
+# ----------------------------
+
+fig, ay = plt.subplots()
+
+py = PolyCollection(verts, facecolors=triangle_colors_avg, edgecolors='black', linewidths=0.3)
+ay.add_collection(py)
+ay.set_aspect('equal')
+
+ay.set_xlim(0, width)
+ay.set_ylim(height, 0)  # flip y-axis for image coords
+
+# run function
+# ----------------------------
+
+plt.show()
+
+# Close turtle window on click
+screen.exitonclick()
+
+
+
+
+
