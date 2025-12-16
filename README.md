@@ -1,1 +1,30 @@
-Brooke and Adam Project write up
+Computational Geometry Project Write Up
+Brooke Boroughs and Adam McCoyer
+
+Visualizing Images through Delaunay Triangulations
+
+Our Goal:
+	For our final computational geometry final project we wanted to use Delaunay triangulations to visualize images in a different way. The motivation behind this project came from a past graphic design project. The prompt of that project was to triangulate an image to create polygon art. This process took a long time which made us wonder if there was a better, more efficient way to do this. Throughout the course we learned about Delaunay Triangulations which maximize the minimum angles of all triangulations. This form of triangulation is useful because it is able to get rid of any triangles that are ‘skinny’ and replace them with ‘fat’ triangles, which guarantees that the circumcircle of every triangle in the Delaunay triangulation contains no other points. This allows for more accurate representations when it comes to 3D modeling, but is also useful for our 2-dimensional goals. 
+Our Code:
+	To turn images into triangulations we created two different codes. One code creates a user set amount of points at random locations throughout the image. The other code lets the user choose points on the image to create more accurate visualizations. The code with points in random locations starts with the user setting the image and the image coordinates to tell the turtle the bounds to put the points. When the code is run it pulls the image up and uses the turtle command in python to randomly place points throughout the bounds on the image, always starting with the 4 corner points. This gives the user a visual representation of where the points are being located in relation to the image. After the points are placed on the image they are put into a list which is run through a Delaunay command that is from the scipy code library. This code uses the Bowyer-Watson algorithm to triangulate the points. The Bowyer-Watson triangulation algorithm is relatively similar to the incremental algorithm for Delaunay triangulations, but it starts by encompassing the point cloud with some “super triangle” onto which the Delaunay triangulation will be added point by point. Although this sounds more complicated than the simple incremental algorithm, it still works in O(nlogn) time. 
+After the points are triangulated, two new windows appear with the triangulation filled with colors in two different ways. The first way is with the color pulled from the centroid, or the center point of the triangle. This is done by adding the coordinate values of each point together and averaging them. The second way we determined colors was by obtaining the RGB value from each corner of the triangle and averaging those colors. In our examples, this resulted in colorings that looked relatively muddied as compared to those using the triangle centroids: 
+
+Colors averaged from the corners
+
+Centroid colors
+	Perhaps for images composed of smooth gradients, this method would be a good option, but for images that have relatively high contrast, it usually does not reflect the picture very well. 
+	The second form of code we did has the user choose the point locations. The start and end of the code is the same but instead of turtle generating points at random the turtle goes to where the user clicks and draws a point. The turtle will keep doing this until the user presses the space button, when that happens the turtle will generate the 4 corner points and then the image will be triangulated. We found that when the user is choosing the points the triangulation tends to be a lot more accurate. Throughout this process we found many places where we could make our code more efficient. For example, using the turtle commands to create the points takes the most time when running the code. If we implemented another way to add the points, the runtime would be much faster. Another way we could improve the code is to look into other ways of generating points that would be strategic to the image without the user needed. 
+	One potential way to pick “better” points for a given image is using the Sobel-Feldman filter. Developed in 1968, this operator is a great tool for image processing because it can approximate the contours of an image based on some measurable characteristic, such as brightness or the intensity of blue, for example. The filter outputs an array of values corresponding to the derivatives of gradient functions (both horizontally and vertically) at each point in the image, so we could potentially concentrate Delaunay points in regions that have large derivative values, that is, places where the image’s brightness is changing quickly, like on the edges of shapes. 
+
+
+
+Further Research: 
+	There are many ways to improve upon this algorithm or extend the ideas in new directions. 
+
+
+Works Cited
+
+Delaunay Code: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Delaunay.html
+Our Code: https://github.com/bborough-spec/Computational-Geometry-Capstone/tree/main
+Overview of Sobel-Feldman Operator: https://en.wikipedia.org/wiki/Sobel_operator
+
