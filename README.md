@@ -14,7 +14,9 @@ How to run the code:
 8) for choosing your own points click on the image in the locations you want the points to appear
 9) when you are done press your space bar and the four corner points will appear and the image will triangulate
 
+https://youtu.be/2ugQm_Tv_f0?si=qWe-QY-DKYrvnWC4
 
+https://youtu.be/UENFMHMhsJw?si=LXPaaGEHEAI9KqJV
 
 Our Goal:
 	For our final computational geometry final project we wanted to use Delaunay triangulations to visualize images in a different way. The motivation behind this project came from a past graphic design project. The prompt of that project was to triangulate an image to create polygon art. This process took a long time which made us wonder if there was a better, more efficient way to do this. Throughout the course we learned about Delaunay Triangulations which maximize the minimum angles of all triangulations. This form of triangulation is useful because it is able to get rid of any triangles that are ‘skinny’ and replace them with ‘fat’ triangles, which guarantees that the circumcircle of every triangle in the Delaunay triangulation contains no other points. This allows for more accurate representations when it comes to 3D modeling, but is also useful for our 2-dimensional goals. 
