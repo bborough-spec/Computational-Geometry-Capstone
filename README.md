@@ -14,6 +14,8 @@ How to run the code:
 8) for choosing your own points click on the image in the locations you want the points to appear
 9) when you are done press your space bar and the four corner points will appear and the image will triangulate
 
+Code running examples:
+
 https://youtu.be/2ugQm_Tv_f0?si=qWe-QY-DKYrvnWC4
 
 https://youtu.be/UENFMHMhsJw?si=LXPaaGEHEAI9KqJV
