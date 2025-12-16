@@ -3,6 +3,17 @@ Brooke Boroughs and Adam McCoyer
 
 Visualizing Images through Delaunay Triangulations
 
+How to run the code:
+1) Insert your chosen image on lines 14,15 and 26 (27 for random points).
+2) switch the turtle screen to fit the image in its window (line 25)
+3) switch the turtle bounds to match the bounds of your image on lines 44, 45
+4) For the random points code switch the integers that the points could choose from to match the image coordanates (line 59)
+5) In that same line choose the number of points you want to appear (line 59)
+6) Run the code :)
+7) Once the code is running for random points it will do the work for you
+8) for choosing your own points click on the image in the locations you want the points to appear
+9) when you are done press your space bar and the four corner points will appear and the image will triangulate
+
 
 
 Our Goal:
@@ -18,6 +29,9 @@ After the points are triangulated, two new windows appear with the triangulation
 
 Further Research: 
 	There are many ways to improve upon this algorithm or extend the ideas in new directions. One of the improvements we could make is making our algorithm more efficient, currently the turtle drawing the points takes about all the time whereas the triangulation itself happens instantly. If we could use something other than the turtle to draw the points we could figure out how to make this work almost instantaneously. Another direction we could look into could be looking to apply this 3 dimensionally. Delaunay triangulations are used for 3d animations to create efficient meshes over objects. Our final direction we thought would be fun is varying the amount of points based on the complexity of the image. If we could evaluate the image and choose the number of points based on its complexity that would create better outputs than random points. 
+
+
+	
 Conclusion:
 	Overall our project was a fun way of applying a topic we learned in class. We were able to play with different images to see what would work best. We found that having the points colored with the centroid of each triangle gives the image a more accurate coloring. We also found that having the user choose the location of the points creates a more accurate visual especially if the points are placed at color changes. This project allowed us to learn a new triangulation formula that we were able to apply to our code. In the end this project was a cool way to deeper our understanding and show what we have learned throughout the course.
 
@@ -25,5 +39,8 @@ Conclusion:
 Works Cited
 
 Delaunay Code: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Delaunay.html
+
 Our Code: https://github.com/bborough-spec/Computational-Geometry-Capstone/tree/main
+
 Overview of Sobel-Feldman Operator: https://en.wikipedia.org/wiki/Sobel_operator
+
